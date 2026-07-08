@@ -1,0 +1,314 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/resumes": {
+      "post": {
+        "operationId": "ResumeController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateResumeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "CV creado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResumeResponseDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "El usuario ya tiene un CV"
+          }
+        },
+        "summary": "Crea el CV de un usuario",
+        "tags": [
+          "resumes"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "CV Manager API",
+    "description": "API para la gestión de hojas de vida",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "CreateWorkExperienceDto": {
+        "type": "object",
+        "properties": {
+          "companyName": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "position": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "startDate": {
+            "type": "string"
+          },
+          "endDate": {
+            "type": "string"
+          },
+          "isCurrent": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "companyName",
+          "position",
+          "startDate"
+        ]
+      },
+      "CreateEducationDto": {
+        "type": "object",
+        "properties": {
+          "institution": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "degree": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "fieldOfStudy": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "startDate": {
+            "type": "string"
+          },
+          "endDate": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "institution",
+          "degree",
+          "startDate"
+        ]
+      },
+      "CreateResumeSkillDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "proficiencyLevel": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 5
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "CreateResumeDto": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "summary": {
+            "type": "string"
+          },
+          "workExperiences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateWorkExperienceDto"
+            }
+          },
+          "education": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateEducationDto"
+            }
+          },
+          "skills": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateResumeSkillDto"
+            }
+          }
+        },
+        "required": [
+          "userId",
+          "title"
+        ]
+      },
+      "WorkExperienceResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string"
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "endDate": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          },
+          "isCurrent": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "companyName",
+          "position",
+          "startDate",
+          "endDate",
+          "isCurrent",
+          "description"
+        ]
+      },
+      "EducationResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "institution": {
+            "type": "string"
+          },
+          "degree": {
+            "type": "string"
+          },
+          "fieldOfStudy": {
+            "type": "string",
+            "nullable": true
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "endDate": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "institution",
+          "degree",
+          "fieldOfStudy",
+          "startDate",
+          "endDate"
+        ]
+      },
+      "ResumeSkillResponseDto": {
+        "type": "object",
+        "properties": {
+          "skillId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "proficiencyLevel": {
+            "type": "number",
+            "nullable": true
+          }
+        },
+        "required": [
+          "skillId",
+          "name",
+          "proficiencyLevel"
+        ]
+      },
+      "ResumeResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string",
+            "nullable": true
+          },
+          "workExperiences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkExperienceResponseDto"
+            }
+          },
+          "education": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EducationResponseDto"
+            }
+          },
+          "skills": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResumeSkillResponseDto"
+            }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "userId",
+          "title",
+          "summary",
+          "workExperiences",
+          "education",
+          "skills",
+          "createdAt",
+          "updatedAt"
+        ]
+      }
+    }
+  }
+}

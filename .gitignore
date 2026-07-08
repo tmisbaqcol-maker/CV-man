@@ -1,0 +1,25 @@
+# dependencies
+node_modules/
+
+# build output
+apps/api/dist/
+apps/web/.next/
+apps/web/out/
+
+# env files (never commit real secrets; *.example files stay tracked)
+.env
+.env.local
+.env.*.local
+apps/api/.env
+apps/web/.env.local
+
+# test coverage
+coverage/
+
+# logs
+npm-debug.log*
+*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db

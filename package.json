@@ -1,0 +1,7 @@
+{
+  "name": "cv-manager",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ]
+}
