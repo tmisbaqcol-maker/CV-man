@@ -10,7 +10,19 @@ async function bootstrap() {
     /\/+$/,
     '',
   );
-  app.enableCors({ origin: frontendUrl });
+  // Vercel preview deployments get a random per-commit hash in their domain
+  // (e.g. https://cv-man-<hash>-tmis.vercel.app), distinct from the stable
+  // production domain in FRONTEND_URL. Allow both so preview links work too.
+  const vercelPreviewPattern = /^https:\/\/cv-man-[a-z0-9]+-tmis\.vercel\.app$/;
+  app.enableCors({
+    origin: (origin, callback) => {
+      if (!origin || origin === frontendUrl || vercelPreviewPattern.test(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+  });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
   const config = new DocumentBuilder()
